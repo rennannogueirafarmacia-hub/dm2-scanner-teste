@@ -1,0 +1,1318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.1">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="pt-BR"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Sistema de Rastreio de DM2&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Carrega Tailwind CSS para estilização moderna e responsiva --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Chart.js para gráficos --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"&gt;&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- CONFIGURAÇÃO DO TAILWIND --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tailwind.config = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>theme: {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>extend: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>colors: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'tech-blue': '#1e3a8a', // Dark blue for tech feel</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'tech-light': '#3b82f6', // Bright blue for accents</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'bg-dark': '#0f172a', // Very dark background</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'diag-pos': '#10b981', // Green for positive diagnosis</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'diag-pre': '#f59e0b', // Amber for pre-diabetes</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'diag-neg': '#6366f1', // Indigo for negative/normal</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'diag-ttgo': '#ef4444', // Red for TTGO alert</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'bmi-normal': '#4ade80', // Green for normal weight</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'bmi-risk': '#f97316', // Orange for overweight/risk</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>fontFamily: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>sans: ['Inter', 'sans-serif'],</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Estilos base para o aspecto tecnológico e o NOVO FUNDO */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white; /* Garante que o texto seja branco sobre o fundo escuro */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>min-height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>/* Fundo com gradiente sutil e ruído para efeito tecnológico */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #0e111a 0%, #171d2b 100%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-attachment: fixed; /* Mantém o fundo fixo */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>/* Adiciona um padrão sutil de ruído/textura para profundidade */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/rect%3E%3C/svg%3E");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.card {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #1e293b; /* Slightly lighter dark background */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #334155;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.05);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.flow-step {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>min-height: 80px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input[type="number"], input[type="text"], input[type="email"], input[type="password"], select {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #1f2937;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #475569;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input[type="checkbox"]:checked {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #3b82f6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #3b82f6;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* ESTILOS DE IMPRESSÃO - GARANTEM UM RELATÓRIO LIMPO E PROFISSIONAL */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@media print {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>/* Oculta tudo, exceto a seção de relatório */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body &gt; * {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>visibility: hidden;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>height: 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>#report-section {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>visibility: visible !important;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>left: 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>top: 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>height: auto;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>color: black !important; /* Texto preto */</p>
+<p class="p1"><span class="Apple-converted-space">                </span>background-color: white !important; /* Fundo branco */</p>
+<p class="p1"><span class="Apple-converted-space">                </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>box-shadow: none;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>/* Garante que o conteúdo do relatório seja visível e formatado */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>#report-section .card, #report-section h2, #report-section p, #report-section table, #report-section th, #report-section td, #report-section ul, #report-section li {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>color: black !important;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>background-color: white !important;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>border-color: #ccc !important;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>box-shadow: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>/* Remove botões de cópia e impressão ao imprimir */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>#report-section button {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>/* Força tabelas a se expandirem e terem bordas nítidas */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>#report-content table {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>border-collapse: collapse;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>#report-content th, #report-content td {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>border: 1px solid #ccc;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>padding: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>text-align: left;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>#report-content h2, #report-content h3 {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>color: #1e3a8a !important; /* Títulos em azul para destaque */</p>
+<p class="p1"><span class="Apple-converted-space">                </span>border-bottom: 2px solid #ccc;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>padding-bottom: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>margin-top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>/* Oculta o gráfico ao imprimir, pois é complexo formatar canvas */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>#chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>display: none !important;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- CRÍTICO: Removida a importação do app.js. O código foi consolidado abaixo. --&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="text-white min-h-screen p-4 sm:p-8 bg-bg-dark"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Tela de Autenticação --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="auth-screen" class="min-h-screen flex items-center justify-center p-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="w-full max-w-md card p-8 rounded-xl text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-4xl font-extrabold text-tech-light mb-2"&gt;DM2 SCANNER&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-400 mb-8"&gt;Acesso para Profissionais de Saúde&lt;/p&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;form id="auth-form" onsubmit="event.preventDefault(); handleAuthSubmit(false)" class="space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="email" id="auth-email" placeholder="Email" required class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="password" id="auth-password" placeholder="Senha (mín. 6 caracteres)" required class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button type="submit" class="w-full py-3 bg-tech-light hover:bg-tech-blue text-white font-bold rounded-full transition duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>FAZER LOGIN</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="auth-message" class="mt-4 p-3 rounded-lg text-sm bg-gray-600"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>Entre com seu email e senha.</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mt-6 pt-4 border-t border-gray-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-sm text-gray-400 mb-3"&gt;Não tem cadastro?&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- A função no onclick será exposta pelo script abaixo --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="handleAuthSubmit(true)" class="w-full py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-full text-sm transition duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>CRIAR CONTA</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- A função no onclick será exposta pelo script abaixo --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="document.getElementById('auth-screen').classList.add('hidden'); document.getElementById('content-area').classList.remove('hidden'); updateAllInputs();" class="text-sm text-gray-500 hover:text-gray-300 transition duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Continuar em MODO CONVIDADO (Visualização)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Área de Conteúdo Principal (Oculta até o Login) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="content-area" class="max-w-6xl mx-auto hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;header class="text-center mb-10 p-4 border-b-2 border-tech-blue flex justify-between items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h1 class="text-4xl sm:text-5xl font-extrabold text-tech-light"&gt;DM2 SCANNER&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="mt-2 text-gray-400 text-left"&gt;Sistema de Rastreio e Fluxograma Diagnóstico de Diabetes Mellitus Tipo 2&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="text-right"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p id="user-display" class="text-sm font-semibold text-green-400"&gt;Usuário Anônimo&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p id="firebase-status" class="mt-1 text-xs text-red-400 italic"&gt;Verificando status do Firebase...&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Seção de Entrada de Dados --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="input-section" class="card p-6 rounded-xl mb-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-2xl font-semibold mb-6 border-b border-gray-600 pb-2"&gt;1. Dados do Paciente&lt;/h2&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- NOVO: Identificação do Paciente --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="patientName" class="block text-sm font-medium text-gray-300 mb-1"&gt;Nome do Paciente&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="patientName" class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="patientId" class="block text-sm font-medium text-gray-300 mb-1"&gt;ID do Paciente&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="patientId" class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="mt-1 text-xs text-gray-400 italic"&gt;Usado para acompanhamento de longo prazo.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Organização vertical de Idade, Categoria e Gênero --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="space-y-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Idade --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="age" class="block text-sm font-medium text-gray-300 mb-1"&gt;Idade (anos)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="age" min="0" class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p id="category-display" class="mt-1 text-xs text-gray-400 italic"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Categoria (display automático) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="category" class="block text-sm font-medium text-gray-300 mb-1"&gt;Categoria (Automática)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="category-status" class="w-full p-3 rounded-lg border border-gray-600 bg-gray-700 text-gray-300 h-[46px] flex items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>Aguardando idade...</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Gênero (Novo campo) - Visibilidade controlada por JS --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div id="gender-input-container" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="gender" class="block text-sm font-medium text-gray-300 mb-1"&gt;Gênero&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;select id="gender" class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;option value=""&gt;Selecione...&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;option value="male"&gt;Masculino (Menino)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;option value="female"&gt;Feminino (Menina)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 class="text-xl font-semibold mt-8 mb-4 border-b border-gray-700 pb-1"&gt;IMC e Risco de Peso&lt;/h3&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Organização vertical (Peso e Altura) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="space-y-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Peso --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="weight" class="block text-sm font-medium text-gray-300 mb-1"&gt;Peso (kg)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="weight" min="0" step="0.1" class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Altura (Alterado para cm) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="height" class="block text-sm font-medium text-gray-300 mb-1"&gt;Altura (cm)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="height" min="50" step="1" class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Display do IMC mais claro e separado --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="bmi-display" class="card p-4 mt-6 rounded-lg hidden border-l-4 border-bmi-normal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-sm font-medium text-gray-300 mb-1"&gt;Índice de Massa Corporal (IMC)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex flex-col sm:flex-row justify-between items-start sm:items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p id="bmi-value" class="text-2xl font-extrabold"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p id="bmi-classification" class="text-md font-semibold text-right"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 class="text-xl font-semibold mt-8 mb-4 border-b border-gray-700 pb-1"&gt;Fatores de Risco (Marque os aplicáveis)&lt;/h3&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Fatores de Risco: mantido em colunas em telas maiores para economizar espaço vertical --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="riskFactors" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Fatores de risco serão injetados aqui via JS --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mt-8 text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="startScreening()" id="start-screening-btn" class="px-8 py-3 bg-tech-light hover:bg-tech-blue text-white font-bold rounded-full transition duration-300 focus:outline-none focus:ring-4 focus:ring-tech-light focus:ring-opacity-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>INICIAR RASTREIO</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Seção do Fluxograma/Resultados --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="flow-section" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-2xl font-semibold mb-6 text-tech-light border-b border-tech-blue pb-2"&gt;2. Fluxograma de Decisão&lt;/h2&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="flow-chart" class="bg-gray-800 p-6 rounded-xl card space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="initial-assessment" class="flow-step bg-tech-blue rounded-lg p-4 font-bold text-lg shadow-xl"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Aguardando Dados...</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Estrutura do screening-result para forçar empilhamento vertical --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="screening-result" class="flow-step bg-gray-700 rounded-lg p-4 font-semibold shadow-md hidden text-left w-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Conteúdo será injetado aqui --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="screening-prompt" class="flow-step bg-gray-600 rounded-lg p-4 font-medium shadow-md hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Prompt para exames laboratoriais --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Resultados de Exames e Diagnóstico --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="lab-input-section" class="p-4 bg-gray-700 rounded-lg shadow-inner hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-xl font-semibold mb-4 text-tech-light"&gt;3. Resultados Laboratoriais&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid grid-cols-1 md:grid-cols-3 gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="gj" class="block text-sm font-medium text-gray-300 mb-1"&gt;Glicemia de Jejum (GJ - mg/dl)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="number" id="gj" min="0" class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="hba1c" class="block text-sm font-medium text-gray-300 mb-1"&gt;HbA1c (%)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="number" id="hba1c" min="0" step="0.1" class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;!-- Container do TTGO-1h, inicialmente oculto --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div id="ttgo-input-container" class="hidden"&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;label for="ttgo1h" class="block text-sm font-medium text-gray-300 mb-1"&gt;TTGO-1h (mg/dl)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="number" id="ttgo1h" min="0" class="w-full p-3 rounded-lg border focus:ring-tech-light focus:border-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="mt-4 text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button onclick="processLabResults()" id="process-lab-btn" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>Processar Resultados</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Resultado Final --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="final-diagnosis" class="flow-step rounded-lg p-4 text-2xl font-extrabold shadow-2xl hidden flex-col"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Diagnóstico Final (DM Confirmado, Pré-Diabetes, Normal) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Botão Salvar e Acompanhar será injetado aqui --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mt-8 text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="resetApp()" class="px-6 py-2 bg-red-700 hover:bg-red-800 text-white font-bold rounded-full transition duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Reiniciar</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Seção de Acompanhamento e Gráficos --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="follow-up-section" class="card p-6 rounded-xl mt-10 hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-2xl font-semibold mb-6 border-b border-tech-blue pb-2 text-tech-light"&gt;5. Acompanhamento e Histórico de Exames&lt;/h2&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="follow-up-section-message" class="p-3 bg-gray-600 rounded-lg text-sm mb-4 hidden"&gt;Mensagem de aviso&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="chart-container" class="mb-8 p-4 bg-gray-900 rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;canvas id="labChart" class="w-full h-80"&gt;&lt;/canvas&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="history-table" class="mt-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3 class="text-xl font-semibold mb-3 text-tech-light"&gt;Histórico de Resultados&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="overflow-x-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;table class="min-w-full text-sm text-left text-gray-400"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;thead class="text-xs text-gray-200 uppercase bg-gray-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th scope="col" class="py-3 px-6"&gt;Data&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th scope="col" class="py-3 px-6"&gt;GJ (mg/dl)&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th scope="col" class="py-3 px-6"&gt;HbA1c (%)&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th scope="col" class="py-3 px-6"&gt;TTGO-1h (mg/dl)&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th scope="col" class="py-3 px-6"&gt;Diagnóstico&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;tbody id="history-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;!-- Linhas de histórico serão injetadas aqui --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;&lt;td colspan="5" class="py-4 px-6 text-center"&gt;Nenhum histórico encontrado.&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Seção do Relatório --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="report-section" class="card p-6 rounded-xl mt-10 hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-2xl font-semibold mb-6 border-b border-tech-blue pb-2 text-tech-light"&gt;4. Relatório Final de Rastreio&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="report-content" class="bg-gray-100 p-4 rounded-lg text-black"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Conteúdo do relatório será inserido aqui em HTML para melhor estética e impressão --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mt-6 text-center space-x-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="copyReport()" class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Copiar Relatório</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="window.print()" class="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-full transition duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Imprimir Relatório</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- === LÓGICA CONSOLIDADA DO APLICATIVO (ANTIGO app.js) === --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script type="module"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>import { getAuth, signInAnonymously, signInWithCustomToken, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>import { getFirestore, doc, collection, setDoc, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Variáveis globais Firebase</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.db = null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.auth = null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.userId = 'guest'; // Padrão antes da autenticação</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.isLoggedIn = false;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.Chart = Chart; // Expõe o Chart.js para o escopo do módulo</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// =========================================================================</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// === BLOCO DE CONFIGURAÇÃO DO FIREBASE (SUAS CHAVES INSERIDAS) ===</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// =========================================================================</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const YOUR_FIREBASE_CONFIG = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Suas credenciais reais do Firebase</p>
+<p class="p1"><span class="Apple-converted-space">            </span>apiKey: "AIzaSyDiA3Axkpk-9sBG56YENZJZUoC2EV1IQzY",<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>authDomain: "dm2-scanner-8a93f.firebaseapp.com",<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>projectId: "dm2-scanner-8a93f",<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>storageBucket: "dm2-scanner-8a93f.firebasestorage.app",</p>
+<p class="p1"><span class="Apple-converted-space">            </span>messagingSenderId: "538528357989",</p>
+<p class="p1"><span class="Apple-converted-space">            </span>appId: "1:538528357989:web:6f69490f4ec1468b21f08c",</p>
+<p class="p1"><span class="Apple-converted-space">            </span>measurementId: "G-0FRH7Z07XQ"</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// As variáveis do sistema agora apontam para a configuração manual</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const appId = YOUR_FIREBASE_CONFIG.projectId;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const firebaseConfig = YOUR_FIREBASE_CONFIG;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const initialAuthToken = null;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// =========================================================================</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (firebaseConfig) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Configuração e Inicialização do Firebase</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const app = initializeApp(firebaseConfig);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>window.db = getFirestore(app);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>window.auth = getAuth(app);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Configuração de Log (opcional)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>setLogLevel('Debug');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Listener de autenticação para controle de acesso</p>
+<p class="p1"><span class="Apple-converted-space">                </span>onAuthStateChanged(window.auth, (user) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (user) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>window.userId = user.uid;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>window.isLoggedIn = true;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>document.getElementById('firebase-status').textContent = `Autenticado: ${user.email || 'Anônimo'}`;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>checkAuthState(); // Entra no app</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>// Se o Firebase está configurado, mas o usuário não está logado, permanece na tela de login</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>window.userId = crypto.randomUUID(); // ID temporário para não logado</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>window.isLoggedIn = false;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>document.getElementById('firebase-status').textContent = 'Aguardando Login.';</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>checkAuthState(); // Volta para o login</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("Firebase Initialization Error:", error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('firebase-status').textContent = 'Erro de inicialização do Firebase. Verifique suas chaves.';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('auth-message').textContent = 'Erro grave ao conectar ao Firebase. Verifique suas credenciais no código.';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('auth-message').classList.remove('bg-gray-600');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('auth-message').classList.add('bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Este bloco agora é inacessível, pois as chaves foram inseridas</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('firebase-status').textContent = 'MODO CONVIDADO: Firebase não configurado (Sem Login/Salvar).';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>window.isLoggedIn = false;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>window.userId = 'default-guest';</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>window.onload = function() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Se as chaves estiverem faltando/o Firebase não foi inicializado, inicia a interface de visualização.</p>
+<p class="p1"><span class="Apple-converted-space">                </span>checkAuthState();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Funções de Autenticação (Login/Cadastro) ---</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function checkAuthState() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const authScreen = document.getElementById('auth-screen');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const contentArea = document.getElementById('content-area');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const userDisplay = document.getElementById('user-display');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (window.isLoggedIn) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>authScreen.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>contentArea.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>userDisplay.textContent = window.auth.currentUser?.email || 'Usuário Não Autenticado (Apenas Leitura)';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateAllInputs(); // Inicia a interface principal</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>authScreen.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>contentArea.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Permite bypass para o modo de visualização</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!firebaseConfig) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('auth-screen').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('content-area').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('user-display').textContent = 'MODO CONVIDADO';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function handleAuthSubmit(isSignUp) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!window.auth) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Bloqueia a tentativa de login/cadastro se o Firebase não foi inicializado (chaves ausentes/incorretas)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('auth-message').textContent = 'ERRO: Firebase não inicializado. Verifique suas chaves de configuração.';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('auth-message').classList.remove('bg-gray-600');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('auth-message').classList.add('bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const email = document.getElementById('auth-email').value;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const password = document.getElementById('auth-password').value;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const authMessage = document.getElementById('auth-message');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>authMessage.textContent = 'Processando...';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>authMessage.classList.remove('bg-red-700', 'bg-diag-pos');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>authMessage.classList.add('bg-gray-600');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!email || !password || password.length &lt; 6) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>authMessage.textContent = 'Email ou Senha inválidos. A senha deve ter no mínimo 6 caracteres.';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>authMessage.classList.remove('bg-gray-600');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>authMessage.classList.add('bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (isSignUp) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>await createUserWithEmailAndPassword(window.auth, email, password);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>authMessage.textContent = 'Cadastro realizado com sucesso! Redirecionando...';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>authMessage.classList.remove('bg-gray-600');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>authMessage.classList.add('bg-diag-pos');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>await signInWithEmailAndPassword(window.auth, email, password);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>authMessage.textContent = 'Login bem-sucedido! Redirecionando...';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>authMessage.classList.remove('bg-gray-600');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>authMessage.classList.add('bg-diag-pos');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("Auth Error:", error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let errorMessage = 'Erro de autenticação. Tente novamente.';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error.code === 'auth/user-not-found') { errorMessage = 'Usuário não encontrado.'; }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>else if (error.code === 'auth/wrong-password') { errorMessage = 'Senha incorreta.'; }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>else if (error.code === 'auth/email-already-in-use') { errorMessage = 'Este email já está cadastrado.'; }</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>authMessage.textContent = errorMessage;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>authMessage.classList.remove('bg-gray-600');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>authMessage.classList.add('bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Funções de Lógica Principal ---</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Variáveis globais para armazenar o estado</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let patientData = {};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let finalDiagnosisData = {};<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>let currentChart = null;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Dados de Referência IMC ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const adultBMICutoffs = [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ max: 18.4, status: 'Abaixo do peso normal', risk: 'normal' },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ max: 24.9, status: 'Peso normal', risk: 'normal' },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ max: 29.9, status: 'Excesso de peso', risk: 'overweight' },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ max: 34.9, status: 'Obesidade classe I', risk: 'overweight' },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ max: 39.9, status: 'Obesidade classe II', risk: 'overweight' },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ max: Infinity, status: 'Obesidade classe III', risk: 'overweight' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const childBMICutoffs = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>male: { 6: { overweight: 16.6, obesity: 18.0 }, 7: { overweight: 17.3, obesity: 19.1 }, 8: { overweight: 16.7, obesity: 20.3 }, 9: { overweight: 18.8, obesity: 21.4 }, 10: { overweight: 19.6, obesity: 22.5 }, 11: { overweight: 20.3, obesity: 23.7 }, 12: { overweight: 21.1, obesity: 24.8 }, 13: { overweight: 21.9, obesity: 25.9 }, 14: { overweight: 22.7, obesity: 26.9 }, 15: { overweight: 23.6, obesity: 27.7 } } ,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>female: { 6: { overweight: 16.1, obesity: 17.4 }, 7: { overweight: 17.1, obesity: 18.9 }, 8: { overweight: 18.1, obesity: 20.3 }, 9: { overweight: 19.1, obesity: 21.7 }, 10: { overweight: 20.1, obesity: 23.2 }, 11: { overweight: 21.1, obesity: 24.5 }, 12: { overweight: 22.1, obesity: 25.9 }, 13: { overweight: 23.0, obesity: 27.7 }, 14: { overweight: 23.8, obesity: 27.9 }, 15: { overweight: 24.2, obesity: 27.7 } }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const adultRiskFactors = [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 'familyHistory', label: 'História familiar de DM2 (1º grau)' }, { id: 'cardiovascularDisease', label: 'História de doença cardiovascular' }, { id: 'hypertension', label: 'Hipertensão arterial' }, { id: 'lowHDL', label: 'HDL abaixo de 35 mg/dl' }, { id: 'highTriglycerides', label: 'Triglicerídeos acima de 250 mg/dl' }, { id: 'pcos', label: 'Síndrome de ovários policísticos' }, { id: 'acanthosis', label: 'Acantose nigricans' }, { id: 'sedentary', label: 'Sedentarismo' }, { id: 'preDiabetes', label: 'Pré-diabetes em exame prévio' }, { id: 'gestationalDiabetes', label: 'Diabetes gestacional prévio' }, { id: 'largeBaby', label: 'Recém-nato grande para idade gestacional' }, { id: 'findriscHigh', label: 'FINDRISC alto ou muito alto' }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const childRiskFactors = [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 'maternalDmOrGd', label: 'História materna de DM2 ou diabetes gestacional' }, { id: 'familyDm1or2', label: 'História familiar de DM2 (1º ou 2º grau)' }, { id: 'acanthosisChild', label: 'Acantose nigricans' }, { id: 'hypertensionChild', label: 'Hipertensão arterial' }, { id: 'dyslipidemia', label: 'Dislipidemia' }, { id: 'pcosChild', label: 'Síndrome de ovários policísticos' }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const allRiskFactorsMap = {};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>[...adultRiskFactors, ...childRiskFactors].forEach(f =&gt; { allRiskFactorsMap[f.id] = f.label; });</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Constantes de Corte (Laboratoriais) ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const DM_GJ = 126;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const DM_HBA1C = 6.5;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const PRE_DM_GJ = 100;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const PRE_DM_HBA1C = 5.7;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const TTGO_DM_CUTOFF = 209;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const TTGO_PREDM_CUTOFF = 155;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Funções Auxiliares ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function getCategoryByAge(age) { return age &gt;= 18 ? 'adult' : 'child'; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function createCheckbox(id, label, group) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input id="risk-${id}" name="${group}-risk" type="checkbox" class="h-4 w-4 rounded border-gray-500 text-tech-light focus:ring-tech-light"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="risk-${id}" class="ml-2 text-gray-300 cursor-pointer select-none"&gt;${label}&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Setup Inicial (agora parte do checkAuthState) ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.onload = function() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const ageInput = document.getElementById('age');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>ageInput.addEventListener('input', updateAllInputs);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('weight').addEventListener('input', displayBMI);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('height').addEventListener('input', displayBMI);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('gender').addEventListener('change', displayBMI);</p>
+<p class="p2"><span class="Apple-converted-space">             </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Chamada de inicialização após o DOM estar pronto</p>
+<p class="p1"><span class="Apple-converted-space">            </span>checkAuthState();<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateAllInputs() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const age = parseInt(document.getElementById('age').value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (isNaN(age) || age &lt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('category-status').textContent = 'Idade inválida.';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('gender-input-container').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('gender').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('riskFactors').innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayBMI();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const category = getCategoryByAge(age);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('category-status').textContent = category === 'adult' ? 'Adulto' : 'Criança / Adolescente';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateRiskFactorCheckboxes(category);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>displayBMI();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function calculateBMI() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const age = parseInt(document.getElementById('age').value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const category = getCategoryByAge(age);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const gender = document.getElementById('gender').value;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const weight = parseFloat(document.getElementById('weight').value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const heightCm = parseFloat(document.getElementById('height').value);<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const heightM = heightCm / 100;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (isNaN(weight) || isNaN(heightCm) || heightCm &lt;= 0 || isNaN(age)) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return { bmi: null, status: 'normal', classification: 'Dados incompletos.' };</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const bmi = weight / (heightM * heightM);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (category === 'adult') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (const cutoff of adultBMICutoffs) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (bmi &lt;= cutoff.max) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>return { bmi: bmi.toFixed(2), status: cutoff.risk, classification: cutoff.status };</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (category === 'child') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (age &lt; 6 || age &gt; 15 || gender === '' || !childBMICutoffs[gender]) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const isOverweightHeuristic = bmi &gt;= 25;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const riskStatus = isOverweightHeuristic ? 'overweight_heuristic' : 'unknown';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return { bmi: bmi.toFixed(2), status: riskStatus, classification: `IMC Calculado. **AVISO:** Classificação precisa depende da Curva de Crescimento (Tabela de referência: 6-15 anos).` };</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const ageKey = age.toString();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const cutoffs = childBMICutoffs[gender][ageKey];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (bmi &gt;= cutoffs.obesity) { return { bmi: bmi.toFixed(2), status: 'overweight', classification: 'Obesidade' };</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else if (bmi &gt;= cutoffs.overweight) { return { bmi: bmi.toFixed(2), status: 'overweight', classification: 'Sobrepeso' };</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else { return { bmi: bmi.toFixed(2), status: 'normal', classification: 'Peso normal' }; }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return { bmi: bmi.toFixed(2), status: 'normal', classification: 'N/A' };</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function displayBMI() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const bmiResult = calculateBMI();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const bmiDisplay = document.getElementById('bmi-display');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const bmiValueElement = document.getElementById('bmi-value');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const bmiClassificationElement = document.getElementById('bmi-classification');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let borderColorClass = 'border-bmi-normal';<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let textColorClass = 'text-bmi-normal';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (bmiResult.status === 'overweight' || bmiResult.status === 'overweight_heuristic') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>borderColorClass = 'border-bmi-risk';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>textColorClass = 'text-bmi-risk';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>bmiDisplay.classList.remove('hidden', 'border-bmi-normal', 'border-bmi-risk');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>bmiDisplay.classList.add(borderColorClass);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>bmiValueElement.classList.remove('text-bmi-normal', 'text-bmi-risk');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>bmiValueElement.classList.add(textColorClass);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (bmiResult.bmi) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bmiDisplay.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bmiValueElement.textContent = `${bmiResult.bmi} kg/m²`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bmiClassificationElement.textContent = `Status: ${bmiResult.classification}`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bmiDisplay.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateRiskFactorCheckboxes(category) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const riskFactorsDiv = document.getElementById('riskFactors');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const genderContainer = document.getElementById('gender-input-container');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const genderSelect = document.getElementById('gender');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>riskFactorsDiv.innerHTML = '';</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (category === 'child') { genderContainer.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else { genderContainer.classList.add('hidden'); genderSelect.value = ''; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const factors = category === 'adult' ? adultRiskFactors : childRiskFactors;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>factors.forEach(factor =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>riskFactorsDiv.innerHTML += createCheckbox(factor.id, factor.label, category);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>riskFactorsDiv.className = 'grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function startScreening() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!window.isLoggedIn) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('initial-assessment', 'ERRO: Você precisa estar logado para iniciar o rastreio.', 'bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const patientName = document.getElementById('patientName').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const patientId = document.getElementById('patientId').value.trim();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!patientName || !patientId) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('initial-assessment', 'ERRO: O Nome e o ID do Paciente são obrigatórios.', 'bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const age = parseInt(document.getElementById('age').value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const category = getCategoryByAge(age);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const weight = parseFloat(document.getElementById('weight').value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const heightCm = parseFloat(document.getElementById('height').value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const gender = document.getElementById('gender').value;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const bmiResult = calculateBMI();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const bmiStatus = bmiResult.status;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const riskCheckboxes = document.querySelectorAll('#riskFactors input[type="checkbox"]:checked');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const riskCount = riskCheckboxes.length;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (isNaN(age) || isNaN(weight) || isNaN(heightCm) || (category === 'child' &amp;&amp; gender === '')) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('initial-assessment', 'ERRO: Preencha todos os campos obrigatórios (Idade, Peso, Altura e Gênero - se criança).', 'bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>patientData = {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>patientName, patientId, age, category, weight, heightCm, gender,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>bmiStatus, riskCount,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>risks: Array.from(riskCheckboxes).map(cb =&gt; ({ id: cb.id.replace('risk-', ''), label: allRiskFactorsMap[cb.id.replace('risk-', '')] })),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bmi: bmiResult.bmi,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bmiClassification: bmiResult.classification</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Lógica de reset visual</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('ttgo-input-container').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('ttgo1h').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('final-diagnosis').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('report-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('follow-up-section').classList.add('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('input-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('flow-section').classList.remove('hidden');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>runScreeningLogic();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function runScreeningLogic() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const { age, category, bmi, bmiClassification, riskCount, risks } = patientData;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let recommended = false;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let reason = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Lógica de Rastreio (mantida igual)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (category === 'adult') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (age &gt;= 35) { recommended = true; reason = `Idade ${age} anos (Universal - ≥ 35).`; }<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>else if (patientData.bmiStatus === 'overweight' &amp;&amp; riskCount &gt;= 1) { recommended = true; reason = `Idade &lt; 35, com sobrepeso/obesidade (IMC ${bmi}) e ${riskCount} fator(es) de risco.`; }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (risks.some(r =&gt; ['preDiabetes', 'gestationalDiabetes', 'largeBaby', 'findriscHigh'].includes(r.id))) { recommended = true; reason = reason || 'Presença de pré-diabetes prévio, diabetes gestacional, recém-nato GIG ou FINDRISC alto/muito alto.'; }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (category === 'child') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const weightCriteria = (patientData.bmiStatus === 'overweight' || patientData.bmiStatus === 'overweight_heuristic');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const ageCriteria = (age &gt;= 10);<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (weightCriteria &amp;&amp; ageCriteria &amp;&amp; riskCount &gt;= 1) { recommended = true; reason = `Critérios completos: Idade ≥ 10 anos, Sobrepeso/Obesidade e ${riskCount} fator(es) de risco.`; }<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>else { reason = `Não atende aos critérios: É necessário Idade ≥ 10 anos OU início da puberdade (Idade: ${age}), Sobrepeso/Obesidade e pelo menos um fator de risco adicional.`; }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Construção do HTML de Exibição (mantida igual)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const riskListHTML = risks.length &gt; 0<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>? `&lt;ul class="list-disc list-inside text-left mx-auto max-w-sm mt-2 text-gray-300 space-y-1"&gt;${risks.map(r =&gt; `&lt;li class="break-words"&gt;${r.label}&lt;/li&gt;`).join('')}&lt;/ul&gt;`</p>
+<p class="p1"><span class="Apple-converted-space">                </span>: '&lt;p class="text-gray-400 mt-2"&gt;Nenhum fator de risco adicional marcado.&lt;/p&gt;';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const mainContentHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-4 w-full flex flex-col items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="p-4 bg-gray-600 rounded-lg text-center border-l-4 border-tech-light w-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-lg font-bold mb-2"&gt;Critério Principal para Rastreio:&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-sm font-medium"&gt;${reason}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="p-4 bg-gray-600 rounded-lg text-center w-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-lg font-bold"&gt;${category === 'adult' ? 'Adulto' : 'Criança / Adolescente'}, ${age} anos&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-sm"&gt;IMC: ${bmi} kg/m² | Classificação: &lt;strong&gt;${bmiClassification}&lt;/strong&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="p-4 bg-gray-600 rounded-lg text-center w-full"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-gray-300"&gt;Fatores de Risco Adicionais Marcados (${riskCount}):&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>${riskListHTML}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisData.screeningResult = recommended ? 'RECOMENDADO' : 'NÃO RECOMENDADO';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisData.screeningReason = reason;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (recommended) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('initial-assessment', 'TRIAGEM INICIAL: Rastreio de DM2 é **RECOMENDADO**', 'bg-diag-pos');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('screening-result').innerHTML = mainContentHTML;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('screening-result').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('screening-prompt', 'PROX. PASSO: Por favor, insira os resultados dos exames laboratoriais (GJ e/ou HbA1c) para o diagnóstico.', 'bg-tech-light');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('lab-input-section').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('initial-assessment', 'TRIAGEM INICIAL: Rastreio de DM2 **NÃO RECOMENDADO** neste momento', 'bg-diag-neg');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('screening-result').innerHTML = `&lt;div class="space-y-4 w-full flex flex-col items-center"&gt;&lt;p class="text-lg font-bold text-center mb-4 text-red-400 border-b border-gray-600 pb-2"&gt;Motivo da Não Recomendação:&lt;/p&gt;&lt;p class="text-sm font-medium text-center mb-4"&gt;${reason || 'O paciente não atende aos critérios de rastreio para DM2 assintomático.'}&lt;/p&gt;${mainContentHTML}&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('screening-result').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('lab-input-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('screening-prompt').classList.add('hidden');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Finaliza o fluxo e permite gerar o relatório/acompanhamento</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayFinalDiagnosis('N/A', 'bg-diag-neg', 'Rastreio não recomendado. Inicie o acompanhamento para monitorar o risco.', true);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('final-diagnosis').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('report-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('follow-up-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function processLabResults() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const gj = parseFloat(document.getElementById('gj').value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const hba1c = parseFloat(document.getElementById('hba1c').value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const ttgo1h = parseFloat(document.getElementById('ttgo1h').value);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const gjValue = isNaN(gj) ? 'N/D' : `${gj} mg/dl`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const hba1cValue = isNaN(hba1c) ? 'N/D' : `${hba1c} %`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const ttgoValue = isNaN(ttgo1h) ? 'N/D' : `${ttgo1h} mg/dl`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (isNaN(gj) &amp;&amp; isNaN(hba1c)) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('screening-prompt', 'ERRO: Insira pelo menos um valor válido (GJ ou HbA1c).', 'bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!firebaseConfig) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('screening-prompt', 'ERRO: Operação de salvar não disponível no MODO CONVIDADO. Insira as chaves do Firebase.', 'bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let diagnosis = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let action = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let colorClass = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let promptTTGO = false;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Lógica de Diagnóstico (mantida igual)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (gj &gt;= DM_GJ || hba1c &gt;= DM_HBA1C) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>diagnosis = 'DIABETES CONFIRMADO'; colorClass = 'bg-diag-pos'; action = 'Recomendar Mudar Estilo de Vida (MEV) e iniciar tratamento farmacológico. **Teste Adicional de Confirmação Obrigatório** (preferencialmente repetir o teste alterado, ou TTGO-1h, GJ ou HbA1c).';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if ((gj &gt;= PRE_DM_GJ &amp;&amp; gj &lt; DM_GJ) || (hba1c &gt;= PRE_DM_HBA1C &amp;&amp; hba1c &lt; DM_HBA1C)) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!isNaN(ttgo1h)) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (ttgo1h &gt;= TTGO_DM_CUTOFF) { diagnosis = 'DIABETES CONFIRMADO (TTGO-1h)'; colorClass = 'bg-diag-pos'; action = 'Recomendar MEV e repetir TTGO-1h em 6 meses. Iniciar tratamento farmacológico.'; }<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>else if (ttgo1h &gt;= TTGO_PREDM_CUTOFF) { diagnosis = 'PRÉ-DIABETES CONFIRMADO (TTGO-1h)'; colorClass = 'bg-diag-pre'; action = 'Recomendar MEV e repetir exames em **1 ano**. Considerar prevenção farmacológica.'; }<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>else { diagnosis = 'PERFIL GLICÊMICO NORMAL (Após TTGO-1h)'; colorClass = 'bg-diag-neg'; action = 'Recomendar MEV e repetir exames em **1 ano**. (Apesar do GJ/HbA1c alterado, o TTGO-1h sugere menor risco).'; }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>diagnosis = 'PRÉ-DIABETES (Aguardando Refino)'; colorClass = 'bg-diag-pre';<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>action = 'Diagnóstico pendente de refino. É **RECOMENDADO** realizar o TTGO-1h para classificar o risco de forma mais precisa, ou repetir os exames GJ/HbA1c em 1 ano. Recomendar MEV e considerar prevenção farmacológica.';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>promptTTGO = true;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>diagnosis = 'PERFIL GLICÊMICO NORMAL'; colorClass = 'bg-diag-neg';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const riskCount = patientData.riskCount;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const findriscHigh = patientData.risks.some(r =&gt; r.id === 'findriscHigh');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>action = (riskCount &gt;= 3 || findriscHigh) ? 'Recomendar MEV e repetir exames em **1 ano** (≥3 fatores de risco ou FINDRISC alto/muito alto).' : 'Recomendar MEV e repetir exames em **3 anos** (&lt;3 fatores de risco ou FINDRISC baixo/intermediário).';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisData.diagnosis = diagnosis;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisData.action = action;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisData.gjValue = gjValue;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisData.hba1cValue = hba1cValue;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisData.ttgoValue = ttgoValue;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (promptTTGO) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('lab-input-section').classList.remove('hidden');<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('screening-prompt', `**PRÉ-DIABETES DETECTADO.** Insira o resultado do TTGO-1h abaixo para refinar o diagnóstico ou clique em "Processar Resultados" novamente para seguir sem o TTGO-1h.`, 'bg-diag-ttgo');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('ttgo-input-container').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('final-diagnosis').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('report-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('screening-prompt').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('lab-input-section').classList.add('hidden');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Se o diagnóstico foi finalizado, salvamos os dados e mostramos a seção de acompanhamento</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (firebaseConfig) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>savePatientData();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log("Modo Convidado: Dados não salvos.");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayFinalDiagnosis(diagnosis, colorClass, action, false);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* Exibe o resultado final com o botão de acompanhamento.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function displayFinalDiagnosis(diagnosis, colorClass, action, isScreeningOnly) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const finalDiagnosisDiv = document.getElementById('final-diagnosis');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisDiv.classList.remove('hidden', 'bg-diag-pos', 'bg-diag-pre', 'bg-diag-neg', 'bg-diag-ttgo');<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisDiv.classList.add(colorClass);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let valuesHTML = isScreeningOnly<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>? ''<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>: `&lt;p class="text-sm text-gray-200 mt-2"&gt;Valores: GJ: ${finalDiagnosisData.gjValue} | HbA1c: ${finalDiagnosisData.hba1cValue} | TTGO-1h: ${finalDiagnosisData.ttgoValue}&lt;/p&gt;`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisDiv.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-2 w-full text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-3xl font-extrabold"&gt;${diagnosis}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-lg font-medium"&gt;${action}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>${valuesHTML}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="mt-4 pt-4 border-t border-gray-600 space-x-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button onclick="generateReport(${isScreeningOnly})" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-bold rounded-full transition duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>Gerar Relatório Final</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button onclick="openFollowUpSection()" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-bold rounded-full transition duration-300"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>Ver Acompanhamento</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisDiv.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Funções de Persistência de Dados (Firestore) ---</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const COLLECTION_NAME = 'diabetes-screenings';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const APP_ID_PATH = appId; // Usa o Project ID como parte do caminho Firestore</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* Salva os dados do paciente e o resultado do exame no Firestore.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function savePatientData() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!window.db || !patientData.patientId) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("Database or Patient ID not ready. Save failed.");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!window.isLoggedIn) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("User not logged in. Save failed.");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const screeningDate = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const patientDocId = patientData.patientId;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Caminho de armazenamento: /artifacts/{ProjectID}/public/data/diabetes-screenings/{PatientID}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const patientRef = doc(window.db, `artifacts/${APP_ID_PATH}/public/data/${COLLECTION_NAME}`, patientDocId);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const patientCoreData = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>name: patientData.patientName,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>age: patientData.age,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>category: patientData.category,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>gender: patientData.gender,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>weight: patientData.weight,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>heightCm: patientData.heightCm,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bmi: patientData.bmi,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bmiClassification: patientData.bmiClassification,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>risks: patientData.risks.map(r =&gt; r.id), // Salva apenas os IDs dos riscos para simplicidade</p>
+<p class="p1"><span class="Apple-converted-space">                </span>lastUpdated: screeningDate,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>userId: window.userId // ID do profissional que salvou</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// setDoc com merge: true para não sobrescrever o histórico de exames</p>
+<p class="p1"><span class="Apple-converted-space">                </span>await setDoc(patientRef, patientCoreData, { merge: true });</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log("Patient core data saved/updated successfully.");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 2. Salva o resultado do exame como um subdocumento no histórico</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const historyCollectionRef = collection(patientRef, 'history');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>await setDoc(doc(historyCollectionRef), {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>date: screeningDate.toISOString(),</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gj: parseFloat(document.getElementById('gj').value) || null,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>hba1c: parseFloat(document.getElementById('hba1c').value) || null,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ttgo1h: parseFloat(document.getElementById('ttgo1h').value) || null,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>diagnosis: finalDiagnosisData.diagnosis,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>action: finalDiagnosisData.action,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>screeningReason: finalDiagnosisData.screeningReason</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log("Exam history saved successfully.");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("Error saving patient data:", error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Aqui você pode adicionar um feedback visual de erro para o usuário</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* Busca o histórico de exames do paciente no Firestore.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function fetchPatientHistory(patientId) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!window.db || !patientId || !firebaseConfig) return [];</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!window.auth.currentUser) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("User not logged in. Cannot fetch history.");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const patientRef = doc(window.db, `artifacts/${APP_ID_PATH}/public/data/${COLLECTION_NAME}`, patientId);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const historyCollectionRef = collection(patientRef, 'history');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Busca e ordena por data</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const q = query(historyCollectionRef, orderBy('date', 'asc'));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const querySnapshot = await getDocs(q);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const history = [];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>querySnapshot.forEach((doc) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>history.push(doc.data());</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return history;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error("Error fetching patient history:", error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* Abre a seção de acompanhamento e carrega os dados históricos.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function openFollowUpSection() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('flow-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('report-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('follow-up-section').classList.remove('hidden');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const history = await fetchPatientHistory(patientData.patientId);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>displayHistoryTable(history);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderChart(history);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!firebaseConfig) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('follow-up-section-message', 'AVISO: Histórico não carregado. Operação de busca no Firestore desabilitada no MODO CONVIDADO.', 'bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (!window.isLoggedIn) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayMessage('follow-up-section-message', 'AVISO: Histórico não carregado. Você deve estar logado para acessar os dados salvos.', 'bg-red-700');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (history.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('follow-up-section-message').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>displayFollowUpMessage('Histórico carregado, mas nenhum exame prévio encontrado para este ID.', 'bg-gray-600');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('follow-up-section-message').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function displayFollowUpMessage(message, colorClass) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const element = document.getElementById('follow-up-section-message');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>element.classList.remove('hidden', 'bg-red-700', 'bg-gray-600');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>element.classList.add(colorClass);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>element.textContent = message;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* Popula a tabela de histórico.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function displayHistoryTable(history) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const historyBody = document.getElementById('history-body');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>historyBody.innerHTML = '';</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (history.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>historyBody.innerHTML = `&lt;tr&gt;&lt;td colspan="5" class="py-4 px-6 text-center"&gt;Nenhum histórico encontrado para ${patientData.patientName}.&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>history.forEach(item =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const date = new Date(item.date).toLocaleDateString('pt-BR');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const row = `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;tr class="bg-gray-800 border-b border-gray-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td class="py-4 px-6 font-medium text-white"&gt;${date}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td class="py-4 px-6"&gt;${item.gj ? item.gj + ' mg/dl' : 'N/D'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td class="py-4 px-6"&gt;${item.hba1c ? item.hba1c + ' %' : 'N/D'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td class="py-4 px-6"&gt;${item.ttgo1h ? item.ttgo1h + ' mg/dl' : 'N/D'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;td class="py-4 px-6"&gt;${item.diagnosis || 'N/A'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>historyBody.innerHTML += row;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/**</p>
+<p class="p1"><span class="Apple-converted-space">         </span>* Renderiza o gráfico de acompanhamento.</p>
+<p class="p1"><span class="Apple-converted-space">         </span>*/</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function renderChart(history) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const ctx = document.getElementById('labChart').getContext('2d');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (currentChart) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentChart.destroy();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Prepara os dados para o gráfico</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const labels = history.map(item =&gt; new Date(item.date).toLocaleDateString('pt-BR'));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const gjData = history.map(item =&gt; item.gj);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const hba1cData = history.map(item =&gt; item.hba1c);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentChart = new Chart(ctx, {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>type: 'line',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>data: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>labels: labels,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>datasets: [</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>label: 'Glicemia de Jejum (mg/dl)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>data: gjData,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>borderColor: 'rgb(255, 99, 132)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>backgroundColor: 'rgba(255, 99, 132, 0.2)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>yAxisID: 'y_gj',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>label: 'HbA1c (%)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>data: hba1cData,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>borderColor: 'rgb(54, 162, 235)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>backgroundColor: 'rgba(54, 162, 235, 0.2)',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>yAxisID: 'y_hba1c',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>]</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>options: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>responsive: true,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>maintainAspectRatio: false,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>interaction: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>mode: 'index',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>intersect: false,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>scales: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>y_gj: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>type: 'linear',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>display: true,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>position: 'left',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>title: { display: true, text: 'GJ (mg/dl)', color: 'rgb(255, 99, 132)' },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>grid: { color: 'rgba(255, 255, 255, 0.1)' },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>ticks: { color: 'white' }</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>y_hba1c: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>type: 'linear',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>display: true,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>position: 'right',</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>title: { display: true, text: 'HbA1c (%)', color: 'rgb(54, 162, 235)' },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>grid: { drawOnChartArea: false },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>ticks: { color: 'white' }</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>x: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>grid: { color: 'rgba(255, 255, 255, 0.1)' },</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>ticks: { color: 'white' }</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>plugins: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>legend: { labels: { color: 'white' } }</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Funções de Relatório ---</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function generateReport(isFinalScreeningOnly) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const pd = patientData;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const fd = finalDiagnosisData;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fd.isFinalScreeningOnly = isFinalScreeningOnly;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const now = new Date().toLocaleDateString('pt-BR');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let reportHTML = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;div class="p-6 bg-white rounded-lg shadow-xl print:shadow-none"&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;h1 class="text-3xl font-bold text-center text-tech-blue mb-4 border-b pb-2 print:text-black print:border-black"&gt;RELATÓRIO DE RASTREIO E DIAGNÓSTICO DE DM2&lt;/h1&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;p class="text-sm text-right text-gray-600 mb-6 print:text-black"&gt;Paciente: &lt;strong&gt;${pd.patientName}&lt;/strong&gt; (ID: ${pd.patientId})&lt;br&gt;Data da Análise: ${now}&lt;/p&gt;`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;h2 class="text-xl font-semibold mb-3 text-tech-light print:text-black"&gt;1. Dados Antropométricos e de Risco&lt;/h2&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;table class="w-full text-sm mb-4 border border-gray-300"&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;thead class="bg-gray-200 print:bg-white"&gt;&lt;tr&gt;&lt;th class="p-2 w-1/3 print:border-black"&gt;Campo&lt;/th&gt;&lt;th class="p-2 print:border-black"&gt;Valor&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;tbody&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 print:border-black"&gt;Categoria&lt;/td&gt;&lt;td class="p-2 print:border-black"&gt;${pd.category === 'adult' ? 'Adulto' : 'Criança / Adolescente'}&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 print:border-black"&gt;Idade&lt;/td&gt;&lt;td class="p-2 print:border-black"&gt;${pd.age} anos&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (pd.category === 'child') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 print:border-black"&gt;Gênero&lt;/td&gt;&lt;td class="p-2 print:border-black"&gt;${pd.gender === 'male' ? 'Masculino (Menino)' : 'Feminino (Menina)'}&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 font-bold print:border-black"&gt;Peso / Altura&lt;/td&gt;&lt;td class="p-2 font-bold print:border-black"&gt;${pd.weight} kg / ${pd.heightCm} cm&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 font-bold text-tech-blue print:border-black"&gt;IMC&lt;/td&gt;&lt;td class="p-2 font-bold text-tech-blue print:text-black print:border-black"&gt;${pd.bmi} kg/m²&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 font-bold text-tech-blue print:border-black"&gt;Classificação IMC&lt;/td&gt;&lt;td class="p-2 font-bold text-tech-blue print:text-black print:border-black"&gt;${pd.bmiClassification}&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;/tbody&gt;&lt;/table&gt;`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;h3 class="text-md font-semibold mb-2 text-tech-light print:text-black"&gt;Fatores de Risco Adicionais Marcados (${pd.riskCount}):&lt;/h3&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (pd.risks.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;ul class="list-disc list-inside ml-4 text-sm mb-4 space-y-1 print:text-black"&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>pd.risks.forEach(r =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>reportHTML += `&lt;li class="print:text-black"&gt;${r.label}&lt;/li&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;/ul&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;p class="text-sm ml-4 italic mb-4 print:text-black"&gt;Nenhum fator de risco adicional marcado.&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;h2 class="text-xl font-semibold mt-4 mb-3 text-tech-light border-t pt-4 print:text-black print:border-gray-400"&gt;2. Fluxograma de Rastreio&lt;/h2&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;table class="w-full text-sm mb-4 border border-gray-300"&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 w-1/3 font-bold print:border-black"&gt;Rastreio Recomendado?&lt;/td&gt;&lt;td class="p-2 font-bold text-lg ${fd.screeningResult === 'RECOMENDADO' ? 'text-diag-pos print:text-green-800' : 'text-diag-neg print:text-red-800'} print:border-black"&gt;${fd.screeningResult}&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 print:border-black"&gt;Critério Principal&lt;/td&gt;&lt;td class="p-2 print:border-black"&gt;${fd.screeningReason}&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;/table&gt;`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!isFinalScreeningOnly) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;h2 class="text-xl font-semibold mt-4 mb-3 text-tech-light border-t pt-4 print:text-black print:border-gray-400"&gt;3. Diagnóstico Laboratorial e Conduta&lt;/h2&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;table class="w-full text-sm mb-4 border border-gray-300"&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;thead&gt;&lt;tr class="bg-gray-200 print:bg-white"&gt;&lt;th class="p-2 print:border-black"&gt;Exame&lt;/th&gt;&lt;th class="p-2 print:border-black"&gt;Resultado&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;tbody&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 print:border-black"&gt;Glicemia de Jejum (GJ)&lt;/td&gt;&lt;td class="p-2 print:border-black"&gt;${fd.gjValue}&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 print:border-black"&gt;Hemoglobina Glicada (HbA1c)&lt;/td&gt;&lt;td class="p-2 print:border-black"&gt;${fd.hba1cValue}&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;tr&gt;&lt;td class="p-2 print:border-black"&gt;TTGO-1h (Se realizado)&lt;/td&gt;&lt;td class="p-2 print:border-black"&gt;${fd.ttgoValue}&lt;/td&gt;&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;/tbody&gt;&lt;/table&gt;`;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;div class="mt-6 p-4 border border-tech-blue bg-blue-50 rounded-lg print:border-black"&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;p class="font-bold text-lg text-tech-blue mb-2 print:text-black"&gt;DIAGNÓSTICO FINAL: ${fd.diagnosis}&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;p class="text-md print:text-black"&gt;CONDUTA/RECOMENDAÇÃO: ${fd.action}&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportHTML += `&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportHTML += `&lt;/div&gt;`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('report-content').innerHTML = reportHTML;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('report-section').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function copyReport() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Cria uma versão de texto limpo para copiar</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let reportText = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const pd = patientData;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const fd = finalDiagnosisData;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const now = new Date().toLocaleDateString('pt-BR');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `RELATÓRIO DE RASTREIO E DIAGNÓSTICO DE DM2\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `Data da Análise: ${now}\n\n`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `1. DADOS ANTROPOMÉTRICOS E DE RISCO\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `-------------------------------------------------\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `Paciente: ${pd.patientName} (ID: ${pd.patientId})\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `Categoria: ${pd.category === 'adult' ? 'Adulto' : 'Criança / Adolescente'}\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `Idade: ${pd.age} anos\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (pd.category === 'child') { reportText += `Gênero: ${pd.gender === 'male' ? 'Masculino (Menino)' : 'Feminino (Menina)'}\n`; }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `Peso: ${pd.weight} kg | Altura: ${pd.heightCm} cm\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `IMC: ${pd.bmi} kg/m² | Classificação: ${pd.bmiClassification}\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `Fatores de Risco Marcados (${pd.riskCount}):\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (pd.risks.length &gt; 0) { pd.risks.forEach(r =&gt; { reportText += ` - ${r.label}\n`; }); } else { reportText += ` - Nenhum fator de risco adicional.\n`; }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `\n`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `2. DECISÃO DE RASTREIO\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `-------------------------------------------------\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `Rastreio Recomendado? ${fd.screeningResult}\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `Critério Principal: ${fd.screeningReason}\n`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!fd.isFinalScreeningOnly) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportText += `\n3. DIAGNÓSTICO E CONDUTA\n`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportText += `-------------------------------------------------\n`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportText += `GJ: ${fd.gjValue} | HbA1c: ${fd.hba1cValue} | TTGO-1h: ${fd.ttgoValue}\n`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportText += `DIAGNÓSTICO FINAL: ${fd.diagnosis}\n`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>reportText += `CONDUTA/RECOMENDAÇÃO: ${fd.action}\n`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>reportText += `\n-------------------------------------------------\n`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const textarea = document.createElement('textarea');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>textarea.value = reportText;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.body.appendChild(textarea);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>textarea.select();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.execCommand('copy');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const button = document.querySelector('#report-section button:first-of-type');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const originalText = button.textContent;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>button.textContent = 'Copiado!';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>button.classList.add('bg-green-500', 'hover:bg-green-600');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>setTimeout(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>button.textContent = originalText;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>button.classList.remove('bg-green-500', 'hover:bg-green-600');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>button.classList.add('bg-blue-500', 'hover:bg-blue-600');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}, 1500);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (err) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Falha ao tentar copiar o relatório: ', err);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.body.removeChild(textarea);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function displayMessage(elementId, message, colorClass) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const element = document.getElementById(elementId);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>element.classList.remove('hidden', 'bg-tech-blue', 'bg-diag-pos', 'bg-diag-pre', 'bg-diag-neg', 'bg-gray-700', 'bg-red-700', 'bg-gray-600', 'bg-diag-ttgo');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>element.classList.add(colorClass);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>element.innerHTML = message;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function resetApp() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>patientData = {};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>finalDiagnosisData = {};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('patientName').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('patientId').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('age').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('gender').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('weight').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('height').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('bmi-display').classList.add('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('gj').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('hba1c').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('ttgo1h').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('ttgo-input-container').classList.add('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('report-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('follow-up-section').classList.add('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('riskFactors').innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('input-section').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('flow-section').classList.add('hidden');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>displayMessage('initial-assessment', 'Aguardando Dados do Paciente...', 'bg-tech-blue');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('screening-result').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('screening-prompt').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('lab-input-section').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('final-diagnosis').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateAllInputs();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// EXPORTAÇÃO DAS FUNÇÕES PARA O ESCOPO GLOBAL (window)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.startScreening = startScreening;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.processLabResults = processLabResults;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.openFollowUpSection = openFollowUpSection;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.generateReport = generateReport;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.copyReport = copyReport;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.resetApp = resetApp;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.handleAuthSubmit = handleAuthSubmit;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
